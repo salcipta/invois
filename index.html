@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Invois & Sebutharga - Salcipta Marketing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 15px;
+        }
+
+        .container {
+            max-width: 900px;
+            background: var(--card-bg);
+            margin: auto;
+            padding: 20px;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .header-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+
+        @media (min-width: 640px) {
+            .header-section {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+            body { padding: 30px 15px; }
+            .container { padding: 40px; }
+        }
+
+        .company-info h1 {
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin: 0 0 4px 0;
+            font-weight: 700;
+        }
+
+        .company-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        .invoice-meta {
+            text-align: left;
+        }
+
+        @media (min-width: 640px) {
+            .invoice-meta {
+                text-align: right;
+            }
+        }
+
+        .invoice-meta select {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-main);
+            background-color: #f8fafc;
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: 0px solid var(--border-color);
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .inline-input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: flex-start;
+        }
+
+        @media (min-width: 640px) {
+            .inline-input-group {
+                justify-content: flex-end;
+            }
+        }
+
+        .inline-input-group label {
+            margin-bottom: 0;
+            white-space: nowrap;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 640px) {
+            .form-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group-full {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 9px 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            border: 0px solid var(--border-color);
+            border-radius: 8px;
+            background-color: #fdfdfe;
+            box-sizing: border-box;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        @media (min-width: 640px) {
+            .date-align-right {
+                text-align: right;
+            }
+        }
+
+        textarea {
+            resize: none;
+            overflow: hidden;
+            min-height: 45px;
+            line-height: 1.5;
+            box-sizing: border-box;
+            height: auto;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 10px 8px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            padding: 9px 16px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-success {
+            background-color: #059669;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #047857;
+        }
+
+        .btn-warning {
+            background-color: #d97706;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background-color: #b45309;
+        }
+
+        .btn-info {
+            background-color: #0284c7;
+            color: white;
+        }
+
+        .btn-info:hover {
+            background-color: #0369a1;
+        }
+
+        .btn-danger {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 5px 8px;
+            font-size: 0.75rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-danger:hover {
+            background: #f87171;
+            color: white;
+        }
+
+        .summary-card {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 15px;
+        }
+
+        .total-box {
+            background: #f8fafc;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            text-align: right;
+            min-width: 200px;
+        }
+
+        .total-box span {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .footer-notes {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .action-bar {
+            margin-top: 25px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        @media print {
+            body { background: white; padding: 0; font-size: 10pt; }
+            .container { box-shadow: none; padding: 0; max-width: 100%; }
+            .no-print { display: none !important; }
+            input, select { border: none; background: transparent; padding: 0; font-size: 9.5pt; color: #000; text-align: inherit; }
+            textarea { border: none; background: transparent; padding: 0; resize: none; font-size: 9.5pt; color: #000; height: auto !important; overflow: visible !important; }
+            select { border: none; background: transparent; padding: 0; font-size: 1.15rem; font-weight: bold; -webkit-appearance: none; -moz-appearance: none; appearance: none; }
+            .date-align-right { text-align: right !important; }
+            .header-section { margin-bottom: 15px; padding-bottom: 12px; }
+            .company-info h1 { font-size: 1.25rem; }
+            .company-info p, label, .footer-notes { font-size: 8pt; }
+            th { font-size: 8pt; background-color: #f8fafc !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 6px; }
+            td { padding: 6px; font-size: 9.5pt; }
+            .total-box { background: #f8fafc !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 8px 15px; }
+            .total-box span { font-size: 1.1rem; }
+            .footer-notes { margin-top: 20px; padding-top: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="invoiceContainer">
+    <div class="header-section">
+        <div class="company-info">
+            <h1>SALCIPTA MARKETING</h1>
+            <p>931A, Kg. Pulau Bahagia, Manir, 21200 Kuala Terengganu.<br>
+            Tel: 011-4373 0030 | E-mel: salcipta@gmail.com | (2026031677657/003864266-M)</p>
+        </div>
+        <div class="invoice-meta">
+            <div>
+                <select id="docType">
+                    <option value="INVOIS">INVOIS</option>
+                    <option value="SEBUTHARGA">SEBUTHARGA</option>
+                </select>
+            </div>
+            <div class="inline-input-group">
+                <label id="noLabel">No. Invois</label>
+                <input type="text" id="invoiceNo" placeholder="Cth: 0227-10001" style="width: 130px; text-align: right;">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-grid">
+        <div class="form-group">
+            <label>Kepada (Bill To)</label>
+            <textarea id="billTo" placeholder="Masukkan nama dan alamat pelanggan..." oninput="autoResize(this)"></textarea>
+        </div>
+        <div class="form-group">
+            <label style="text-align: right;">Tarikh Dokumen</label>
+            <input type="date" id="invoiceDate" class="date-align-right" style="width: 160px; margin-left: auto; display: block;">
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table id="itemTable">
+            <thead>
+                <tr>
+                    <th style="width: 6%;">Bil</th>
+                    <th style="width: 50%;">Butiran Item / Kerja</th>
+                    <th style="width: 12%;">Kuantiti</th>
+                    <th style="width: 16%;">Harga (RM)</th>
+                    <th style="width: 16%;">Jumlah (RM)</th>
+                    <th class="no-print" style="width: 5%;"></th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <tr>
+                    <td>1</td>
+                    <td><textarea placeholder="Nyatakan butiran kerja..." oninput="autoResize(this)"></textarea></td>
+                    <td><input type="number" value="" placeholder="0" class="qty" oninput="KiraJumlah()"></td>
+                    <td><input type="number" value="" placeholder="0.00" class="price" oninput="KiraJumlah()"></td>
+                    <td><input type="text" value="0.00" class="item-total" readonly style="border:none; background:transparent; font-weight:600;"></td>
+                    <td class="no-print"><button class="btn-danger" onclick="PadamBaris(this)">X</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="no-print" style="margin-bottom: 20px;">
+        <button class="btn btn-outline" onclick="TambahBaris()">+ Tambah Item Kerja</button>
+    </div>
+
+    <div class="form-group-full">
+        <label>Nota</label>
+        <textarea id="invoiceNote" placeholder="Yang benar. Terima Kasih." oninput="autoResize(this)"></textarea>
+    </div>
+
+    <div class="summary-card">
+        <div class="total-box">
+            <label style="margin-bottom: 2px;">Jumlah Keseluruhan</label>
+            RM <span id="grandTotal">0.00</span>
+        </div>
+    </div>
+
+    <div class="footer-notes">
+        <p><strong>Maklumat Pembayaran:</strong> No Akaun MBSB Bank: Salcipta Marketing (1005012100004294)</p>
+    </div>
+</div>
+
+<div class="container no-print" style="margin-top: 15px; background: transparent; padding: 0;">
+    <div class="action-bar" style="margin-top: 0;">
+        <input type="file" id="csvFileInput" accept=".csv" style="display: none;" onchange="RestoreCSV(event)">
+        <button class="btn btn-info" onclick="document.getElementById('csvFileInput').click()">Restore CSV</button>
+        <button class="btn btn-outline" onclick="EksportCSV()">Eksport CSV</button>
+        <button class="btn btn-success" onclick="SimpanKeGoogleDrive()">Simpan ke Google Drive (Cloud)</button>
+        <button class="btn btn-warning" onclick="MuatTurunImej()">Muat Turun Imej (PNG)</button>
+        <button class="btn" onclick="CetakDokumen()">Cetak / PDF Biasa</button>
+    </div>
+</div>
+
+<script>
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwiu0fEVKIrbfebUJvLFiAUnTu9BXkSX1Dt0Q7hrNTQgMSg5cHOMAEJj7SyJntyW5k26g/exec";
+
+    function KemaskiniLabel() {
+        let type = document.getElementById('docType').value;
+        document.getElementById('noLabel').innerText = `No. ${type.toLowerCase()}`;
+    }
+
+    document.getElementById('docType').addEventListener('change', KemaskiniLabel);
+
+    function autoResize(textarea) {
+        textarea.style.height = 'auto';
+        textarea.style.height = (textarea.scrollHeight + 10) + 'px';
+    }
+
+    function SegarkanSemuaTextarea() {
+        document.querySelectorAll('textarea').forEach(ta => {
+            ta.style.height = 'auto';
+            ta.style.height = (ta.scrollHeight + 10) + 'px';
+        });
+    }
+
+    function KiraJumlah() {
+        let rows = document.querySelectorAll('#tableBody tr');
+        let grandTotal = 0;
+
+        rows.forEach((row, index) => {
+            row.cells[0].innerText = index + 1;
+            let qty = parseFloat(row.querySelector('.qty').value) || 0;
+            let price = parseFloat(row.querySelector('.price').value) || 0;
+            let total = qty * price;
+            
+            row.querySelector('.item-total').value = total.toFixed(2);
+            grandTotal += total;
+        });
+
+        document.getElementById('grandTotal').innerText = grandTotal.toFixed(2);
+    }
+
+    function TambahBaris(desc = "", qty = "", price = "") {
+        let tbody = document.getElementById('tableBody');
+        let rowCount = tbody.rows.length + 1;
+        
+        let newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td>${rowCount}</td>
+            <td><textarea placeholder="Nyatakan butiran kerja..." oninput="autoResize(this)">${desc}</textarea></td>
+            <td><input type="number" value="${qty}" placeholder="0" class="qty" oninput="KiraJumlah()"></td>
+            <td><input type="number" value="${price}" placeholder="0.00" class="price" oninput="KiraJumlah()"></td>
+            <td><input type="text" value="0.00" class="item-total" readonly style="border:none; background:transparent; font-weight:600;"></td>
+            <td class="no-print"><button class="btn-danger" onclick="PadamBaris(this)">X</button></td>
+        `;
+        
+        tbody.appendChild(newRow);
+        let ta = newRow.querySelector('textarea');
+        autoResize(ta);
+        KiraJumlah();
+    }
+
+    function PadamBaris(btn) {
+        let row = btn.closest('tr');
+        let tbody = document.getElementById('tableBody');
+        
+        if (tbody.rows.length > 1) {
+            row.remove();
+            KiraJumlah();
+        } else {
+            alert('Dokumen mesti mempunyai sekurang-kurangnya satu item.');
+        }
+    }
+
+    function JanaKandunganCSV() {
+        let docType = document.getElementById('docType').value;
+        let invoiceNo = document.getElementById('invoiceNo').value || 'Dokumen';
+        let invoiceDate = document.getElementById('invoiceDate').value;
+        let billTo = document.getElementById('billTo').value.replace(/(\r\n|\n|\r)/gm, " ");
+        let invoiceNote = document.getElementById('invoiceNote').value.replace(/(\r\n|\n|\r)/gm, " ");
+
+        let csvRows = [];
+        csvRows.push(["Field", "Value"]);
+        csvRows.push(["docType", docType]);
+        csvRows.push(["invoiceNo", invoiceNo]);
+        csvRows.push(["invoiceDate", invoiceDate]);
+        csvRows.push(["billTo", billTo]);
+        csvRows.push(["invoiceNote", invoiceNote]);
+
+        let rows = document.querySelectorAll('#tableBody tr');
+        rows.forEach((row, index) => {
+            let desc = row.querySelector('textarea').value.replace(/(\r\n|\n|\r)/gm, " ");
+            let qty = row.querySelector('.qty').value;
+            let price = row.querySelector('.price').value;
+            csvRows.push([`item_${index}_desc`, desc]);
+            csvRows.push([`item_${index}_qty`, qty]);
+            csvRows.push([`item_${index}_price`, price]);
+        });
+
+        return csvRows.map(e => e.join(",")).join("\n");
+    }
+
+    function EksportCSV() {
+        let docType = document.getElementById('docType').value;
+        let invoiceNo = document.getElementById('invoiceNo').value || 'Dokumen';
+        let csvContent = "data:text/csv;charset=utf-8," + JanaKandunganCSV();
+        let encodedUri = encodeURI(csvContent);
+        let link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `${docType}_${invoiceNo}_backup.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    function RestoreCSV(event) {
+        let file = event.target.files[0];
+        if (!file) return;
+
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            let text = e.target.result;
+            let lines = text.split("\n");
+            
+            let dataMap = {};
+            let itemsData = {};
+
+            for (let i = 1; i < lines.length; i++) {
+                let line = lines[i].trim();
+                if (!line) continue;
+                
+                let commaIndex = line.indexOf(",");
+                if (commaIndex === -1) continue;
+                
+                let key = line.substring(0, commaIndex);
+                let val = line.substring(commaIndex + 1).replace(/^"|"$/g, '');
+
+                if (key.startsWith("item_")) {
+                    let parts = key.split("_");
+                    let index = parts[1];
+                    let prop = parts[2];
+                    if (!itemsData[index]) itemsData[index] = {};
+                    itemsData[index][prop] = val;
+                } else {
+                    dataMap[key] = val;
+                }
+            }
+
+            if (dataMap["docType"]) {
+                document.getElementById('docType').value = dataMap["docType"];
+                KemaskiniLabel();
+            }
+            if (dataMap["invoiceNo"]) document.getElementById('invoiceNo').value = dataMap["invoiceNo"];
+            if (dataMap["invoiceDate"]) document.getElementById('invoiceDate').value = dataMap["invoiceDate"];
+            if (dataMap["billTo"]) {
+                document.getElementById('billTo').value = dataMap["billTo"];
+                autoResize(document.getElementById('billTo'));
+            }
+            if (dataMap["invoiceNote"]) {
+                document.getElementById('invoiceNote').value = dataMap["invoiceNote"];
+                autoResize(document.getElementById('invoiceNote'));
+            }
+
+            let tbody = document.getElementById('tableBody');
+            tbody.innerHTML = "";
+
+            let index = 0;
+            while (itemsData[index]) {
+                let itm = itemsData[index];
+                TambahBaris(itm.desc || "", itm.qty || "", itm.price || "");
+                index++;
+            }
+            if (index === 0) {
+                TambahBaris();
+            }
+
+            KiraJumlah();
+            alert("Data invois/sebutharga berjaya direstore daripada fail CSV!");
+            document.getElementById('csvFileInput').value = "";
+        };
+        reader.readAsText(file);
+    }
+
+    function CetakDokumen() {
+        SegarkanSemuaTextarea();
+        let textareas = document.querySelectorAll('textarea');
+        let replacements = [];
+
+        textareas.forEach(ta => {
+            let div = document.createElement('div');
+            div.style.cssText = window.getComputedStyle(ta).cssText;
+            div.style.height = 'auto';
+            div.style.whiteSpace = 'pre-wrap';
+            div.style.wordBreak = 'break-word';
+            div.style.border = 'none';
+            div.style.background = 'transparent';
+            div.style.padding = '0';
+            div.innerText = ta.value;
+            
+            ta.style.display = 'none';
+            ta.parentNode.insertBefore(div, ta);
+            replacements.push({ ta: ta, div: div });
+        });
+
+        window.print();
+
+        setTimeout(() => {
+            replacements.forEach(item => {
+                item.ta.style.display = 'block';
+                item.div.remove();
+            });
+        }, 500);
+    }
+
+    function MuatTurunImej() {
+        SegarkanSemuaTextarea();
+        let element = document.getElementById('invoiceContainer');
+        let docType = document.getElementById('docType').value;
+        let invNo = document.getElementById('invoiceNo').value || 'Dokumen';
+
+        setTimeout(() => {
+            html2canvas(element, { 
+                scale: 2, 
+                useCORS: true, 
+                logging: false,
+                onclone: function(clonedDoc) {
+                    clonedDoc.querySelectorAll('textarea').forEach((ta, index) => {
+                        let originalTa = element.querySelectorAll('textarea')[index];
+                        if (originalTa) {
+                            let div = clonedDoc.createElement('div');
+                            div.style.cssText = window.getComputedStyle(originalTa).cssText;
+                            div.style.height = 'auto';
+                            div.style.whiteSpace = 'pre-wrap';
+                            div.style.wordBreak = 'break-word';
+                            div.innerText = originalTa.value;
+                            ta.parentNode.replaceChild(div, ta);
+                        }
+                    });
+                }
+            }).then(canvas => {
+                let link = document.createElement('a');
+                link.download = `${docType}_${invNo}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }, 200);
+    }
+
+    function SimpanKeGoogleDrive() {
+        if (GOOGLE_SCRIPT_URL.includes("PASTIKAN_URL_ANDA_DI_SINI")) {
+            alert("Sila masukkan URL Google Apps Script anda pada kod JavaScript terlebih dahulu!");
+            return;
+        }
+
+        let docType = document.getElementById('docType').value;
+        let invoiceNo = document.getElementById('invoiceNo').value;
+        let invoiceDate = document.getElementById('invoiceDate').value;
+        let billTo = document.getElementById('billTo').value;
+        let grandTotal = document.getElementById('grandTotal').innerText;
+
+        if (!invoiceNo) {
+            alert("Sila masukkan nombor rujukan dokumen terlebih dahulu.");
+            return;
+        }
+
+        SegarkanSemuaTextarea();
+
+        let btn = document.querySelector('.btn-success');
+        btn.innerText = "Sedang Menyimpan...";
+        btn.disabled = true;
+
+        let element = document.getElementById('invoiceContainer');
+
+        setTimeout(() => {
+            html2canvas(element, { 
+                scale: 2, 
+                useCORS: true, 
+                logging: false,
+                onclone: function(clonedDoc) {
+                    clonedDoc.querySelectorAll('textarea').forEach((ta, index) => {
+                        let originalTa = element.querySelectorAll('textarea')[index];
+                        if (originalTa) {
+                            let div = clonedDoc.createElement('div');
+                            div.style.cssText = window.getComputedStyle(originalTa).cssText;
+                            div.style.height = 'auto';
+                            div.style.whiteSpace = 'pre-wrap';
+                            div.style.wordBreak = 'break-word';
+                            div.innerText = originalTa.value;
+                            ta.parentNode.replaceChild(div, ta);
+                        }
+                    });
+                }
+            }).then(canvas => {
+                let imageBase64 = canvas.toDataURL('image/png');
+                let csvData = JanaKandunganCSV();
+                
+                let payload = {
+                    docType: docType,
+                    invoiceNo: invoiceNo,
+                    invoiceDate: invoiceDate,
+                    billTo: billTo,
+                    grandTotal: grandTotal,
+                    imageBase64: imageBase64,
+                    csvData: csvData
+                };
+
+                fetch(GOOGLE_SCRIPT_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(() => {
+                    alert(`Berjaya! Fail Imej & Fail CSV ${docType} telah disimpan ke Google Drive.`);
+                    btn.innerText = "Simpan ke Google Drive (Cloud)";
+                    btn.disabled = false;
+                })
+                .catch(error => {
+                    console.error("Ralat:", error);
+                    alert("Gagal menyimpan ke Google Drive.");
+                    btn.innerText = "Simpan ke Google Drive (Cloud)";
+                    btn.disabled = false;
+                });
+            });
+        }, 200);
+    }
+</script>
+
+</body>
+</html>
